@@ -27,10 +27,15 @@ def promptChat():
     userClassesTaken = ', '.join(content["courses"])
     userYear = str(content["year"])
 
-    # print("i am so cool and i am " + str(userYear) + " yeaars old and I love " + ', '.join(userClassesTaken))
+    csv_string = ""
+    if(userMajor == "Computer Science"):
+        with open('csv_files/comp_courses.csv', 'r') as file:
+            csv_string = file.read()
+    
+    
 
     # ChatGPT Prompt
-    chatPrompt = f"Make a 4 year degree plan for a Rice  {userMajor}  major and a table \
+    chatPrompt = f"{csv_string} Use these list of courses to make a 4 year degree plan for a Rice  {userMajor}  major and a table \
         with options for distribution courses and free electives for each year. \
         Student will be in year  {userYear}  next school year, and has already completed \
         the following courses:  {userClassesTaken} . No text or explanations necessary, \
