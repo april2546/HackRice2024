@@ -1,5 +1,5 @@
 // scrapes course titles, names, and credit hours 
-// from a search result using the rice course catalog: https://courses.rice.edu/courses/swkscat.main 
+// from a search result using the rice course catalog: https://courses.rice.edu/courses/!SWKSCAT.cat?p_action=cata
 // on line 37: std::string html_document = get_request(INSERT_DOMAIN_HERE);
 #include <iostream>
 #include <fstream>
