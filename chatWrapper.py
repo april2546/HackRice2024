@@ -1,15 +1,22 @@
 import os
 import openai
+import json
 
-openai_api_key = os.getenv("OPENAI_API_KEY")
-#openai.api_key = openai_api_key
-client = openai_api_key
 
-content = input("User: ")
-completion = client.chat.completions.create(model = "gpt-4o-mini",
-messages = [
-  {"role": "user", "content": content} # content is the message we want to send
-])
+# Load environment variables from .env file
 
-chat_response = completion.choices[0].message.content
-print(f'ChatGPT: {chat_response}')
+def chatWrapper(content):
+  openai.api_key = os.getenv("OPENAI_API_KEY")
+
+  # Create the completion response in openai
+  completion = openai.chat.completions.create(
+    model = "gpt-4o-mini",
+    messages = [
+      {"role": "user", "content": content} # content is the message we want to send
+    ],
+  )
+
+  # Extract the response as a string from completion
+  chat_response = completion.choices[0].message.content
+
+  return chat_response
