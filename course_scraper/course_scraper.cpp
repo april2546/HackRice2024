@@ -34,7 +34,7 @@ struct course {
 
 int main() {
     curl_global_init(CURL_GLOBAL_ALL); // initialize curl globally
-    std::string html_document = get_request("https://courses.rice.edu/courses/!SWKSCAT.cat?p_acyr_code=2025&p_action=CATASRCH&p_onebar=&p_mode=AND&p_subj_cd=PHIL&p_subj=PHIL&p_dept=&p_school=&p_df=&p_submit=&as_fid=f0071ef8b7d71a9106c5f903e7d8185a33b54f44"); // target page
+    std::string html_document = get_request("https://courses.rice.edu/courses/!SWKSCAT.cat?p_acyr_code=2025&p_action=CATASRCH&p_onebar=&p_mode=AND&p_subj_cd=&p_subj=&p_dept=&p_school=&p_df=GRP3&p_submit=&as_fid=f0071ef8b7d71a9106c5f903e7d8185a33b54f44"); // target page
     htmlDocPtr doc = htmlReadMemory(html_document.c_str(), html_document.length(), nullptr, nullptr, HTML_PARSE_NOERROR); // parse html
     xmlXPathContextPtr context = xmlXPathNewContext(doc); // initialize the XPath context for libxml2
 
