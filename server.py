@@ -3,7 +3,7 @@ import chatWrapper
 
 # Importing flask module in the project is mandatory
 # An object of Flask class is our WSGI application.
-from flask import Flask, request
+from flask import Flask, request, jsonify
 
 
 # Flask constructor takes current module (__name__) as argument.
@@ -44,7 +44,7 @@ def promptChat():
     print(cleaned_response)
     
     # print(request.form['foo']) # should display 'bar'
-    return 'Received !' # response to your request.
+    return jsonify(cleaned_response) # response to your request.
 
 
 # main driver function
