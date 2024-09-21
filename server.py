@@ -1,3 +1,4 @@
+import chatWrapper
 # Flask Setup: https://www.geeksforgeeks.org/flask-creating-first-simple-application/
 
 # Importing flask module in the project is mandatory
@@ -33,7 +34,14 @@ def promptChat():
         Student will be in year  {userYear}  next school year, and has already completed \
         the following courses:  {userClassesTaken} . No text or explanations necessary, \
         just output in a json object format."
-    print (chatPrompt)
+    # print (chatPrompt)
+
+    response = chatWrapper(chatPrompt)
+
+    # Clean the chatWrapper output to be json formatted
+    cleaned_response = response.strip('` \njson\n')
+
+    print(cleaned_response)
     
     # print(request.form['foo']) # should display 'bar'
     return 'Received !' # response to your request.
