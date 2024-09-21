@@ -2,6 +2,9 @@ import os
 import openai
 import json
 
+
+# Load environment variables from .env file
+
 def chatWrapper(content):
   openai.api_key = os.getenv("OPENAI_API_KEY")
 

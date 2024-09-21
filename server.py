@@ -4,11 +4,12 @@ import chatWrapper
 # Importing flask module in the project is mandatory
 # An object of Flask class is our WSGI application.
 from flask import Flask, request, jsonify
+from flask_cors import CORS
 
 
 # Flask constructor takes current module (__name__) as argument.
 app = Flask(__name__)
-
+CORS(app)
 # The route() function of the Flask class is a decorator, 
 # which tells the application which URL should call 
 # the associated function.
@@ -23,7 +24,7 @@ def promptChat():
 
     # String vars for ChatGPT prompt
     userMajor = content["major"]
-    userClassesTaken = ', '.join(content["classesTaken"])
+    userClassesTaken = ', '.join(content["courses"])
     userYear = str(content["year"])
 
     # print("i am so cool and i am " + str(userYear) + " yeaars old and I love " + ', '.join(userClassesTaken))
@@ -36,7 +37,7 @@ def promptChat():
         just output in a json object format."
     # print (chatPrompt)
 
-    response = chatWrapper(chatPrompt)
+    response = chatWrapper.chatWrapper(chatPrompt)
 
     # Clean the chatWrapper output to be json formatted
     cleaned_response = response.strip('` \njson\n')
