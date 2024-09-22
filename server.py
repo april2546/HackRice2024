@@ -3,12 +3,12 @@ import chatWrapper
 
 # Importing flask module in the project is mandatory
 # An object of Flask class is our WSGI application.
-from flask import Flask, request, jsonify
+from flask import Flask, request, jsonify, render_template, send_from_directory
 from flask_cors import CORS
 import json
 
 # Flask constructor takes current module (__name__) as argument.
-app = Flask(__name__)
+app = Flask(__name__, template_folder='hackrice14/dist')
 CORS(app)
 # The route() function of the Flask class is a decorator, 
 # which tells the application which URL should call 
@@ -17,7 +17,7 @@ CORS(app)
 
 
 # Bounding '/' URL with promptChat() function
-@app.route('/', methods=['POST', 'GET'])
+@app.route('/', methods=['POST'])
 def promptChat():
     content = request.json
     print (content)  # content is a dict with the same structure as testinput.json
@@ -151,6 +151,14 @@ def promptChat():
     # print(request.form['foo']) # should display 'bar'
     return jsonify(json.loads(cleaned_response)) # response to your request.
 
+@app.route('/')
+def home():
+    return render_template('index.html')
+
+@app.route('/<path:filename>')
+def static_files(filename):
+    print(filename)
+    return send_from_directory('./hackrice14/dist', filename)
 
 # main driver function
 if __name__ == '__main__':
