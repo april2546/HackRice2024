@@ -27,12 +27,6 @@ def promptChat():
     userClassesTaken = ', '.join(content["courses"])
     userYear = str(content["year"])
 
-    csv_string = ""
-    if(userMajor == "Computer Science"):
-        with open('csv_files/comp_courses.csv', 'r') as file:
-            csv_string = file.read()
-    
-
     
     with open('course_scraper/comp_courses.csv', 'r') as file:
             csv_string = file.read()
@@ -50,52 +44,82 @@ def promptChat():
     chatExample = str({
     "degree_plan": {
         "Sophomore": {
-        "Required_Courses": [
-            {"title": "COMP 215", "credit_hours": "4"},
-            {"title": "COMP 222", "credit_hours": "4"},
-            {"title": "COMP 312", "credit_hours": "3"},
-            {"title": "COMP 330", "credit_hours": "3"}
-        ],
-        "Distribution_Courses": [
-            {"title": "ARTS 103", "credit_hours": "3"},
-            {"title": "ECON 100", "credit_hours": "3"}
-        ],
-        "Free_Electives": [
-            {"title": "Free Elective", "credit_hours": "3"},
-            {"title": "Free Elective", "credit_hours": "3"}
-        ]
+            "Fall Semester": {
+                "Required_Courses": [
+                    {"title": "COMP 215", "credit_hours": "4"},
+                    {"title": "COMP 222", "credit_hours": "4"},
+                ],
+                "Distribution_Courses": [
+                    {"title": "ARTS 103", "credit_hours": "3"},
+                ],
+                "Free_Electives": [
+                    {"title": "Free Elective", "credit_hours": "3"}
+                ]
+            },
+            "Spring Semester": {
+                "Required_Courses": [
+                    {"title": "COMP 312", "credit_hours": "3"},
+                    {"title": "COMP 330", "credit_hours": "3"}
+                ],
+                "Distribution_Courses": [
+                    {"title": "ECON 100", "credit_hours": "3"}
+                ],
+                "Free_Electives": [
+                    {"title": "Free Elective", "credit_hours": "3"}
+                ]
+            }
         },
         "Junior": {
-        "Required_Courses": [
-            {"title": "COMP 310", "credit_hours": "4"},
-            {"title": "COMP 321", "credit_hours": "4"},
-            {"title": "COMP 340", "credit_hours": "4"},
-            {"title": "COMP 402", "credit_hours": "4"}
-        ],
-        "Distribution_Courses": [
-            {"title": "PHIL 160", "credit_hours": "3"},
-            {"title": "PSYC 101", "credit_hours": "3"}
-        ],
-        "Free_Electives": [
-            {"title": "Free Elective", "credit_hours": "3"},
-            {"title": "Free Elective", "credit_hours": "3"}
-        ]
+            "Fall Semester": {
+                "Required_Courses": [
+                    {"title": "COMP 310", "credit_hours": "4"},
+                    {"title": "COMP 321", "credit_hours": "4"},
+                ],
+                "Distribution_Courses": [
+                    {"title": "PHIL 160", "credit_hours": "3"},
+                ],
+                "Free_Electives": [
+                    {"title": "Free Elective", "credit_hours": "3"}
+                ]
+            },
+            "Spring Semester": {
+                "Required_Courses": [
+                    {"title": "COMP 340", "credit_hours": "4"},
+                    {"title": "COMP 402", "credit_hours": "4"}
+                ],
+                "Distribution_Courses": [
+                    {"title": "PSYC 101", "credit_hours": "3"}
+                ],
+                "Free_Electives": [
+                    {"title": "Free Elective", "credit_hours": "3"}
+                ]
+            }
         },
         "Senior": {
-        "Required_Courses": [
-            {"title": "COMP 410", "credit_hours": "4"},
-            {"title": "COMP 411", "credit_hours": "4"},
-            {"title": "COMP 415", "credit_hours": "4"},
-            {"title": "COMP 460", "credit_hours": "4"}
-        ],
-        "Distribution_Courses": [
-            {"title": "SPAN 263", "credit_hours": "3"},
-            {"title": "LING 200", "credit_hours": "3"}
-        ],
-        "Free_Electives": [
-            {"title": "Free Elective", "credit_hours": "3"},
-            {"title": "Free Elective", "credit_hours": "3"}
-        ]
+            "Fall Semester": {
+                "Required_Courses": [
+                    {"title": "COMP 410", "credit_hours": "4"},
+                    {"title": "COMP 411", "credit_hours": "4"},
+                ],
+                "Distribution_Courses": [
+                    {"title": "SPAN 263", "credit_hours": "3"},
+                ],
+                "Free_Electives": [
+                    {"title": "Free Elective", "credit_hours": "3"}
+                ]
+            },
+            "Spring Semester": {
+                "Required_Courses": [
+                    {"title": "COMP 415", "credit_hours": "4"},
+                    {"title": "COMP 460", "credit_hours": "4"}
+                ],
+                "Distribution_Courses": [
+                    {"title": "LING 200", "credit_hours": "3"}
+                ],
+                "Free_Electives": [
+                    {"title": "Free Elective", "credit_hours": "3"}
+                ]
+            }
         }
     }
     })
