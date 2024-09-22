@@ -8,34 +8,66 @@
 #include "libxml/HTMLparser.h"
 #include "libxml/xpath.h"
 
-static size_t write_callback(void *contents, size_t size, size_t nmemb, void *userp) {
-    ((std::string*)userp)->append((char*)contents, size * nmemb);
-    return size * nmemb;
-}
-
-std::string get_request(std::string url) {
-    CURL *curl = curl_easy_init();
-    std::string result;
-    if(curl) {
-        curl_easy_setopt(curl, CURLOPT_URL, url.c_str());
-        curl_easy_setopt(curl, CURLOPT_WRITEFUNCTION, write_callback);
-        curl_easy_setopt(curl, CURLOPT_WRITEDATA, &result);
-        curl_easy_perform(curl);
-        curl_easy_cleanup(curl);
-    }
-    return result;
-}
-
 struct course {
     std::string title,
                 name,
                 credit_hours;
 };
 
+static size_t write_callback(void *contents, size_t size, size_t nmemb, void *userp) {
+    ((std::string*)userp)->append((char*)contents, size * nmemb);
+    return size * nmemb;
+}
+
+std::string get_request(std::string url) {
+    CURL* curl;
+    CURLcode res;
+    std::string htmlContent;
+    curl = curl_easy_init();
+    if(curl) {
+        curl_easy_setopt(curl, CURLOPT_URL, url.c_str());
+        curl_easy_setopt(curl, CURLOPT_WRITEFUNCTION, write_callback);
+        curl_easy_setopt(curl, CURLOPT_WRITEDATA, &htmlContent);
+        res = curl_easy_perform(curl);
+        if(res != CURLE_OK)
+            std::cerr << "curl_easy_perform() failed: " << curl_easy_strerror(res) << std::endl;
+        curl_easy_cleanup(curl);
+    }
+    return htmlContent;
+}
+
+std::vector<course> parse_HTML(const std::string& htmlContent) {
+    std::vector<course> courses;
+    htmlDocPtr doc = htmlReadMemory(htmlContent.c_str(), htmlContent.size(), NULL, NULL, HTML_PARSE_NOERROR | HTML_PARSE_NOWARNING);
+    if(doc == NULL) {
+        std::cerr << "Error parsing HTML content" << std::endl;
+        return courses;
+    }
+
+    xmlXPathContextPtr xpathCtx = xmlXPathNewContext(doc);
+    if(xpathCtx == NULL) {
+        std::cerr << "Error creating XPath context" << std::endl;
+        xmlFreeDoc(doc);
+        return courses;
+    }
+
+    xmlXPathObjectPtr xpathObj = xmlXPathEvalExpression((xmlChar*)"//tr[contains(@class, 'even') or contains(@class, 'odd')]", xpathCtx);
+    if(xpathObj == NULL) {
+        std::cerr << "Error evaluating XPath expression" << std::endl;
+        xmlXPathFreeContext(xpathCtx);
+        xmlFreeDoc(doc);
+        return courses;
+    }
+    xmlNodeSetPtr nodes = xpathObj->nodesetval;
+
+
+    return courses;
+}
+
 int main() {
     curl_global_init(CURL_GLOBAL_ALL); // initialize curl globally
     std::string html_document = get_request("https://courses.rice.edu/courses/!SWKSCAT.cat?p_acyr_code=2025&p_action=CATASRCH&p_onebar=&p_mode=AND&p_subj_cd=&p_subj=&p_dept=&p_school=&p_df=GRP1&p_submit=&as_fid=f0071ef8b7d71a9106c5f903e7d8185a33b54f44"); // target page
-    htmlDocPtr doc = htmlReadMemory(html_document.c_str(), html_document.length(), nullptr, nullptr, HTML_PARSE_NOERROR); // parse html
+    htmlDocPtr doc = htmlReadMemory(html_document.c_str(), html_document.length(), NULL, NULL, HTML_PARSE_NOERROR); // parse html
     xmlXPathContextPtr context = xmlXPathNewContext(doc); // initialize the XPath context for libxml2
 
     // get the course elementss
@@ -68,12 +100,12 @@ int main() {
 
     xmlFreeDoc(doc);
 
-    std::ofstream csv_file("courses.csv"); // create csv file
-    csv_file << "\"title\",\"name\",\"credit_hours\"\\" << std::endl; // csv header
+    std::ofstream txt_file("courses.txt"); // create csv file
+    txt_file << "\"title\",\"name\",\"credit_hours\"\\" << std::endl; // csv header
     for(const auto& c : courses) { // iterate through course vector and write to csv
-        csv_file << "\"" << c.title << "\",\"" << c.name << "\",\"" << c.credit_hours << "\"\\" << std::endl;
+        txt_file << "\"" << c.title << "\",\"" << c.name << "\",\"" << c.credit_hours << "\"\\" << std::endl;
     }
-    csv_file.close();
+    txt_file.close();
     curl_global_cleanup();
     return 0;
 }
