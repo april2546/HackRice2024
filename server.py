@@ -28,13 +28,13 @@ def promptChat():
     userYear = str(content["year"])
     poo_string = ""
     if (userMajor == "Computer Science"):
-          with open('course_scraper/requirements/comp_requirements.txt', 'r') as file:
+          with open('requirement_scraper/requirements/comp_requirements.txt', 'r') as file:
             poo_string = file.read()
     elif (userMajor == "Business"):
-        with open('course_scraper/requirements/busi_requirements.txt', 'r') as file:
+        with open('requirement_scraper/requirements/busi_requirements.txt', 'r') as file:
             poo_string = file.read()
     elif (userMajor == "Philosophy"):
-        with open('course_scraper/requirements/phil_requirements.txt', 'r') as file:
+        with open('requirement_scraper/requirements/phil_requirements.txt', 'r') as file:
             poo_string = file.read()
 
    
