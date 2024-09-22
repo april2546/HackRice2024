@@ -5,7 +5,7 @@ import chatWrapper
 # An object of Flask class is our WSGI application.
 from flask import Flask, request, jsonify
 from flask_cors import CORS
-
+import json
 
 # Flask constructor takes current module (__name__) as argument.
 app = Flask(__name__)
@@ -25,26 +25,13 @@ def promptChat():
     # String vars for ChatGPT prompt
     userMajor = content["major"]
     userClassesTaken = ', '.join(content["courses"])
-    userYear = str(content["year"])
-
-    csv_string = ""
-    if(userMajor == "Computer Science"):
-        with open('csv_files/comp_courses.csv', 'r') as file:
-            csv_string = file.read()
-    
-
+    userYear = content["year"]
     
     with open('course_scraper/comp_courses.csv', 'r') as file:
             csv_string = file.read()
 
     with open('course_scraper/test.csv', 'r') as file:
             poo_string = file.read()
-
-
-
-    userMajor = "Computer Science"
-    userClassesTaken = ""
-    userYear = "Freshman"
 
 
     chatExample = str({
@@ -125,7 +112,7 @@ def promptChat():
 
         
     # print(request.form['foo']) # should display 'bar'
-    return jsonify(cleaned_response) # response to your request.
+    return jsonify(json.loads(cleaned_response)) # response to your request.
 
 
 # main driver function
